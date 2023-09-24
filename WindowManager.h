@@ -8,10 +8,14 @@ private:
 	std::vector<Window> _wins;
 
 public:
-	void newWin(float x, float y);
+	void newWin(sf::Vector2f pos, sf::Vector2f size);
 	void moveToFirst(int index);
+	void unfocusAll();
+	void closeWin(int index);
 
 	std::vector<Window>& getWins();
 	void draw(sf::RenderWindow& rw);
+
+	bool isEmpty();
 };
 

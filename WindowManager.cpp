@@ -1,15 +1,33 @@
 #include "WindowManager.h"
 
-void WindowManager::newWin(float x, float y)
+void WindowManager::newWin(sf::Vector2f pos, sf::Vector2f size)
 {
-    _wins.insert(_wins.begin(), Window(x, y));
+    _wins.insert(_wins.begin(), Window(pos, size));
+
+    unfocusAll();
+    _wins[0].setFocused(true);
 }
 
 void WindowManager::moveToFirst(int index)
 {
-
-    //std::iter_swap(_wins.begin() + 0, _wins.begin() + index);
     std::rotate(_wins.begin(), _wins.begin() + index, _wins.begin() + index + 1);
+
+    unfocusAll();
+    _wins[0].setFocused(true);
+}
+
+void WindowManager::unfocusAll()
+{
+    for (Window& w : _wins)
+    {
+        w.setFocused(false);
+    }
+}
+
+void WindowManager::closeWin(int index)
+{
+    _wins.erase(_wins.begin() + index);
+    unfocusAll();
 }
 
 std::vector<Window>& WindowManager::getWins()
@@ -23,4 +41,9 @@ void WindowManager::draw(sf::RenderWindow& rw)
     {
         _wins[i].draw(rw);
     }
+}
+
+bool WindowManager::isEmpty()
+{
+    return _wins.empty();
 }
